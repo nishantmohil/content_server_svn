@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ filename }} - Content Server{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+    <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</div>
+
+<div class="viewer-container">
+    <div class="viewer-header">
+        <h2>{{ filename }}</h2>
+        <a href="{{ download_link }}" class="btn btn-primary" download><i class="fas fa-download"></i> Download</a>
+    </div>
+    <div class="docx-content">
+        {{ content|safe }}
+    </div>
+</div>
+{% endblock %}

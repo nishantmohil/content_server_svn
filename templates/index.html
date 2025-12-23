@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse - Content Server{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+    <a href="/"><i class="fas fa-home"></i> Home</a>
+    {% for crumb in breadcrumbs %}
+    <span>/</span>
+    <a href="/browse/{{ crumb.path }}">{{ crumb.name }}</a>
+    {% endfor %}
+</div>
+
+<div class="file-grid">
+    {% if current_path %}
+    <a href="/browse/{{ current_path }}/.." class="file-item">
+        <div class="icon folder"><i class="fas fa-arrow-up"></i></div>
+        <div class="filename">..</div>
+    </a>
+    {% endif %}
+
+    {% for item in items %}
+    {% if item.is_dir %}
+    <a href="/browse/{{ item.path }}" class="file-item">
+        <div class="icon folder"><i class="fas fa-folder"></i></div>
+        <div class="filename">{{ item.name }}</div>
+    </a>
+    {% else %}
+    {% if item.name.lower().endswith('.docx') %}
+    {% set icon_class = 'docx' %}
+    {% set icon = 'fa-file-word' %}
+    {% elif item.name.lower().endswith('.pdf') %}
+    {% set icon_class = 'pdf' %}
+    {% set icon = 'fa-file-pdf' %}
+    {% else %}
+    {% set icon_class = 'file' %}
+    {% set icon = 'fa-file' %}
+    {% endif %}
+
+    <a href="/view/{{ item.path }}" class="file-item">
+        <div class="icon {{ icon_class }}"><i class="fas {{ icon }}"></i></div>
+        <div class="filename">{{ item.name }}</div>
+    </a>
+    {% endif %}
+    {% else %}
+    <div style="grid-column: 1/-1; text-align: center; color: #888;">
+        <p>This folder is empty.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
