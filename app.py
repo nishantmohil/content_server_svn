@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Configuration
 # UPDATE THIS PATH to point to your actual data directory
 # Example: CONTENT_ROOT = '/home/user/my_documents'
-CONTENT_ROOT = os.path.join(os.getcwd(), 'content_root')
+CONTENT_ROOT = '/Users/nishantmohil/Documents/DPP'
 
 @app.route('/')
 def index():
@@ -83,14 +83,8 @@ def view_file(filepath):
     ext = os.path.splitext(filename)[1].lower()
     
     if ext == '.docx':
-        try:
-            with open(abs_path, "rb") as docx_file:
-                result = mammoth.convert_to_html(docx_file)
-                html = result.value
-                messages = result.messages
-                return render_template('view_docx.html', content=html, filename=filename, download_link=f'/download/{filepath}')
-        except Exception as e:
-            return f"Error converting file: {e}", 500
+        # Use client-side rendering for better fidelity (math, complex layouts)
+        return render_template('view_docx.html', filename=filename, file_url=f'/download/{filepath}')
             
     elif ext == '.pdf':
         # Serve the PDF file for the browser's native viewer or embed it

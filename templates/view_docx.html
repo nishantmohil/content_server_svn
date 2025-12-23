@@ -1,19 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ filename }} - Content Server{% endblock %}
+{% block title %}{{ filename }} - Shishu Vidya Niketan Public School{% endblock %}
 
 {% block content %}
 <div class="breadcrumbs">
     <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
 </div>
 
-<div class="viewer-container">
-    <div class="viewer-header">
+<div class="viewer-container" style="padding: 0; min-height: 90vh; display: flex; flex-direction: column;">
+    <div class="viewer-header" style="padding: 20px;">
         <h2>{{ filename }}</h2>
-        <a href="{{ download_link }}" class="btn btn-primary" download><i class="fas fa-download"></i> Download</a>
+        <a href="{{ file_url }}" class="btn btn-primary" download><i class="fas fa-download"></i> Download</a>
     </div>
-    <div class="docx-content">
-        {{ content|safe }}
+
+    <!-- Container for docx rendering -->
+    <div id="docx-container" style="flex-grow: 1; padding: 20px; overflow-y: auto;">
+        <div style="text-align: center; color: #666; margin-top: 50px;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>Loading document...</p>
+        </div>
     </div>
 </div>
+
+<!-- JSZip is required for docx-preview -->
+<script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+<script src="https://unpkg.com/docx-preview/dist/docx-preview.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('docx-container');
+        const fileUrl = "{{ file_url }}";
+
+        fetch(fileUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                container.innerHTML = ''; // Clear loading spinner
+                const docxOptions = {
+                    className: "docx", // class name/prefix for default styles
+                    inWrapper: true, // enables rendering of wrapper around document content
+                    ignoreWidth: false, // disables rendering of document width
+                    ignoreHeight: false, // disables rendering of document height
+                    ignoreFonts: false, // disables fonts rendering (swaps fonts to standard one)
+                    breakPages: true, // enables page breaking on page breaks
+                    ignoreLastRenderedPageBreak: true, // disables page breaking on lastRenderedPageBreak elements
+                    experimental: true, // enables experimental features (like Tab handling)
+                    trimXmlDeclaration: true, // if true, xml declaration will be removed from xml documents before parsing
+                    useBase64URL: false, // if true, images, fonts, etc. will be converted to base 64 URL, otherwise URL.createObjectURL is used
+                    useMathMLPolyfill: true, // includes MathML polyfills for chrome, edge, etc.
+                    debug: false // enables debug output
+                };
+
+                docx.renderAsync(blob, container, null, docxOptions)
+                    .then(x => console.log("docx: finished"))
+                    .catch(e => {
+                        console.error(e);
+                        container.innerHTML = `<div style="text-align: center; color: red;">
+                                <i class="fas fa-exclamation-circle fa-2x"></i>
+                                <p>Error rendering document: ${e.message}</p>
+                            </div>`;
+                    });
+            })
+            .catch(err => {
+                console.error("Error fetching file:", err);
+                container.innerHTML = `<div style="text-align: center; color: red;">
+                                <i class="fas fa-exclamation-circle fa-2x"></i>
+                                <p>Failed to load file.</p>
+                            </div>`;
+            });
+    });
+</script>
 {% endblock %}
