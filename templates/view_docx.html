@@ -7,17 +7,19 @@
     <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
 </div>
 
-<div class="viewer-container" style="padding: 0; min-height: 90vh; display: flex; flex-direction: column;">
-    <div class="viewer-header" style="padding: 20px;">
-        <h2>{{ filename }}</h2>
-        <a href="{{ file_url }}" class="btn btn-primary" download><i class="fas fa-download"></i> Download</a>
+<div class="viewer-wrapper">
+    <div class="viewer-header">
+        <h2><i class="fas fa-file-word" style="color: var(--docx-color); margin-right: 10px;"></i>{{ filename }}</h2>
+        <a href="{{ file_url }}" class="btn btn-primary" download>
+            <i class="fas fa-download"></i> Download
+        </a>
     </div>
 
     <!-- Container for docx rendering -->
-    <div id="docx-container" style="flex-grow: 1; padding: 20px; overflow-y: auto;">
-        <div style="text-align: center; color: #666; margin-top: 50px;">
-            <i class="fas fa-spinner fa-spin fa-2x"></i>
-            <p>Loading document...</p>
+    <div id="docx-container">
+        <div style="text-align: center; color: var(--text-secondary); margin-top: 50px;">
+            <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--primary-color);"></i>
+            <p style="margin-top: 15px; font-weight: 500;">Rendering document...</p>
         </div>
     </div>
 </div>

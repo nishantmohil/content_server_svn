@@ -7,10 +7,12 @@
     <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
 </div>
 
-<div class="viewer-container" style="padding: 20px;">
+<div class="viewer-wrapper">
     <div class="viewer-header">
-        <h2>{{ filename }}</h2>
-        <a href="{{ file_url }}" class="btn btn-primary" download><i class="fas fa-download"></i> Download</a>
+        <h2><i class="fas fa-file-pdf" style="color: var(--pdf-color); margin-right: 10px;"></i>{{ filename }}</h2>
+        <a href="{{ file_url }}" class="btn btn-primary" download>
+            <i class="fas fa-download"></i> Download
+        </a>
     </div>
     <embed src="{{ file_url }}" type="application/pdf" class="pdf-frame" />
 </div>
