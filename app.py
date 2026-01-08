@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Configuration
 # UPDATE THIS PATH to point to your actual data directory
 # Example: CONTENT_ROOT = '/home/user/my_documents'
-CONTENT_ROOT = '/Users/nishantmohil/Documents/DPP'
+CONTENT_ROOT = '/home/svnlab/svnlocal'
 
 @app.route('/')
 def index():
