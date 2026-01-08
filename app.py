@@ -90,6 +90,12 @@ def view_file(filepath):
         # Serve the PDF file for the browser's native viewer or embed it
         # We can pass the URL to the download route which serves the raw file
         return render_template('view_pdf.html', filename=filename, file_url=f'/download/{filepath}')
+
+    elif ext == '.mp3':
+        return render_template('view_audio.html', filename=filename, file_url=f'/download/{filepath}')
+
+    elif ext == '.mp4':
+        return render_template('view_video.html', filename=filename, file_url=f'/download/{filepath}')
         
     else:
         # Fallback for other files
